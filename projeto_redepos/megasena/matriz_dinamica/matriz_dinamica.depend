@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1603484789 source:/home/luan/projeto_redepos/megasena/matriz_dinamica/main.c
+	<stdio.h>
+	<stdlib.h>
+

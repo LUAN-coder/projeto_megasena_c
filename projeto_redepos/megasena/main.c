@@ -35,21 +35,24 @@ int main(void)
     printf("\n");
 
     jogos_possiveis = AlocaMatriz(numero_de_jogos,numero_de_bolas);
+    jogos_possiveis = GeradorAleatorio(jogos_possiveis,numero_de_jogos,numero_de_bolas);
+    ImprimeMatriz(jogos_possiveis,numero_de_jogos,numero_de_bolas);
+    LiberaMatriz(jogos_possiveis,numero_de_jogos);
 
 }
 
 
-int **AlocaMatriz(int m, int n){
+int AlocaMatriz(int m, int n){
  int **M;
     int i;
-
-    M = (int**)malloc(sizeof(int *)*m);
+    M = malloc(m*sizeof(int*));
     if(M == NULL){
         printf("Memoria insuficiente.\n");
         exit(1);
     }
     for(i = 0; i < m; i++){
-    M[i]=(int*)malloc(sizeof(int)*n);
+
+    M[i]=malloc(n*sizeof(int));
     if(M[i] == NULL){
         printf("Memoria insuficiente.\n");
         exit(1);
@@ -63,6 +66,7 @@ void LiberaMatriz(int **M, int m){
   for(i = 0; i < m; i++)
     free(M[i]);
   free(M);
+  printf("Espaço de memória liberada.\n");
 }
 
 void ImprimeMatriz(int **M, int m, int n){
@@ -74,3 +78,42 @@ void ImprimeMatriz(int **M, int m, int n){
     printf("\n");
   }
 }
+
+int GeradorAleatorio(int **M,int m, int n){
+  int i,j;
+
+  for(i = 0; i < m; i++){
+    for(j = 0; j < n; j++){
+
+                    do{
+                        M[i][j] = rand()%59+1;
+                    }while(VerificadorDeIguais(M[i][j],M,m,n)==1);
+
+
+    }
+  }
+  return M;
+}
+
+int VerificadorDeIguais(int num, int **M, int m, int n){
+    int i,j;
+    int aux;
+
+      for(i = 0; i < m; i++){
+            for(j = 0; j < n; j++){
+            if(M[i][j] == num){
+                aux=1;
+            }else{
+                aux=0;
+            }
+
+        }
+      }
+return aux;
+}
+
+
+
+
+
+
