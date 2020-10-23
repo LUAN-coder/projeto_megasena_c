@@ -1,56 +1,76 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include <malloc.h>
 
-int main()
+int main(void)
 {
 
-    int N;/* variável que irá conter o numero de jogos */
-    int M;/* variável que irá conter o número de bolas */
-    //int dados[50063860][15]; /* matriz para os resultados*/
+    int numero_de_jogos;/* variável que irá conter o numero de jogos */
+    int numero_de_bolas;/* variável que irá conter o número de bolas */
+    int **jogos_possiveis;
 
-
-    srand(time(NULL)); /*fáz com que os números não se repitam*/
     printf("\n");
-    printf("     Projeto gerador de numeros aleatórios para megasena:\n");
+    printf("     Projeto gerador de números aleatórios para Mega-sena:\n");
     printf("\n");
     printf("\n");
     do{
-        printf("1) digite o número 'N' de jogos da megasena que deseja fazer:");
-        scanf("%i",& N);
+        printf("1) digite o número 'N' de jogos da Mega-sena que deseja fazer:\n");
+        scanf("%i",& numero_de_jogos);
 
-    }while(N < 0 );
+    }while(numero_de_jogos < 0 );
 
     printf("\n");
     printf("\n");
 
     do{
-        printf("2) digite agora o número de bolas(entre 6 e 15) que os %i jogos devem ter:", N);
-        scanf("%i",& M);
-    }while(M<6 || M>15);
+        printf("2) digite agora o número de bolas(entre 6 e 15) que os %i jogos devem ter: \n", numero_de_jogos);
+        scanf("%i",& numero_de_bolas);
+    }while(numero_de_bolas<6 || numero_de_bolas>15);
 
-    //possibilidade_de_jogo(N,M);
+    //N = possibilidade_de_jogo(N,M); /*faz com que os números não se repitam*/
+    srand( time( NULL ) ); /* inicia o gerador de números aleatórios. */
+    printf("\n");
+    printf("\n");
 
+    jogos_possiveis = AlocaMatriz(numero_de_jogos,numero_de_bolas);
 
-
-    return 0;
 }
 
-void possibilidade_de_jogo(int jogos, int bolas){
-    int bolas_max = 6;
-    int combinatoria;
-    combinatoria = fatorial(60)*fatorial(bolas-bolas_max)/(fatorial(54)*fatorial(bolas));
-    printf("É possivel gerar no máximo %i resultados",combinatoria);
-    if(jogos>combinatoria){
-            printf("É possivel gerar no máximo %i resultados",combinatoria);
+
+int **AlocaMatriz(int m, int n){
+ int **M;
+    int i;
+
+    M = (int**)malloc(sizeof(int *)*m);
+    if(M == NULL){
+        printf("Memoria insuficiente.\n");
+        exit(1);
     }
-
+    for(i = 0; i < m; i++){
+    M[i]=(int*)malloc(sizeof(int)*n);
+    if(M[i] == NULL){
+        printf("Memoria insuficiente.\n");
+        exit(1);
+        }
+    }
+    return M;
 }
 
-//Função fatorial recursiva
-int fatorial(int numero)
-{
-   if(numero > 1)
-      return numero*fatorial(numero - 1);
-   else
-      return 1;
+void LiberaMatriz(int **M, int m){
+  int i;
+  for(i = 0; i < m; i++)
+    free(M[i]);
+  free(M);
+}
+
+void ImprimeMatriz(int **M, int m, int n){
+  int i,j;
+  for(i = 0; i < m; i++){
+    for(j = 0; j < n; j++){
+      printf(" %2d ",M[i][j]);
+    }
+    printf("\n");
+  }
 }
