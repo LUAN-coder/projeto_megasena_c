@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1603731685 source:/home/luan/projeto_redepos/megasena2/main.c
+	<stdio.h>
+	<stdlib.h>
+	<malloc.h>
+
