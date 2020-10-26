@@ -17,7 +17,7 @@ int main()
         FILE *jogos;
 
         //abrindo o arquivo
-        jogos = fopen("resultados.txt", "w+");
+        jogos = fopen("resultados.txt", "a+");
 
         //testando se o arquivo foi realmente criado
         if(jogos == NULL)
@@ -38,7 +38,7 @@ int main()
         printf("\n");
         printf("1) Digite quantos jogos quer fazer:");
         scanf("%d",&numero_de_jogos);                   //inserção do número de jogos
-        printf("1) Digite o número de bolas que os jogos devem ter:");
+        printf("2) Digite o número de bolas que os jogos devem ter:");
         scanf("%d",&numero_de_bolas);                   //inserção do número de bolas
         printf("\n");
         printf("      Espere um pouco......    ");
@@ -58,10 +58,16 @@ int main()
 
         srand(time(NULL));
         do{
+
         gerador_aleatorio();
 
-        //usando fprintf para armazenar a string no arquivo
-        fprintf (jogos, "%s", bolas_sorteadas);
+                                                    //usando fprintf para armazenar a string no arquivo
+                                                    //fprintf (jogos, "%s", bolas_sorteadas);
+
+
+        //usando fwrite para armazenar a string no arquivo
+        //fwrite(bolas_sorteadas,sizeof(char),strlen(bolas_sorteadas),jogos);
+        fputs(bolas_sorteadas,jogos);
         printf("%s", bolas_sorteadas);
         numero_de_jogos--;
         }while(numero_de_jogos!=0);
@@ -76,7 +82,8 @@ int main()
 
   while (!feof(jogos))
     {
-       fscanf(jogos,"%s",&bolas_sorteadas);
+       //fscanf(jogos,"%s",&bolas_sorteadas);
+       fread(bolas_sorteadas,sizeof(char),strlen(bolas_sorteadas),jogos);
        printf("%s",bolas_sorteadas);
     }
 
@@ -87,11 +94,15 @@ int main()
   printf("\n");
   printf("Dados gravados com sucesso!");
 
-    return 0;
+  printf("\n");
 
         printf("*************************************************\n");
         printf("************   Fim do código    *****************\n");
         printf("*************************************************\n");
+
+    return 0;
+
+
 
 }
 
@@ -131,19 +142,17 @@ void gerador_aleatorio(void){
 
     for(i = 0; i<(numero_de_bolas); i++){      // percorre o vetor auxiliar
         n = rand()%59+1;                         // gera um número aleatório entre 1 e 60
-        printf("%d\n",n);
         if(n/10==0){                             // verifica se n é um numero menor que 10 se for passa pela condição
-        bolas_sorteadas[i*2] =48;                // recebe o "0"
-        bolas_sorteadas[i*2+1] = n+48;           // recebe um numero que pode ser 1 até 9
+        bolas_sorteadas[i*3] =48;                // recebe o "0"
+        bolas_sorteadas[i*3+1] = n+48;           // recebe um numero que pode ser 1 até 9
         }
         else{                                    // caso contrário significa que o numero gerado aleatoriamente foi maior que 10
-        bolas_sorteadas[i*2] = n/10+48;          // recebe o primeiro algarismo
-        bolas_sorteadas[i*2+1] = n%10+48;         // recebe o segundo algarismo
+        bolas_sorteadas[i*3] = n/10+48;          // recebe o primeiro algarismo
+        bolas_sorteadas[i*3+1] = n%10+48;         // recebe o segundo algarismo
         }
-        bolas_sorteadas[i*2+2] = '32';             // coloca um caractere espaço
+        bolas_sorteadas[i*3+2] = 32;             // coloca um caractere espaço
     }
-    bolas_sorteadas[2*numero_de_bolas] = '\n';  // substitui o ultimo espaço de caractere pelo caractere \n que representa uma quebra de linha
-
+    bolas_sorteadas[3*numero_de_bolas-1] = '\n';  // substitui o ultimo espaço de caractere pelo caractere \n que representa uma quebra de linha
 }
 
 
